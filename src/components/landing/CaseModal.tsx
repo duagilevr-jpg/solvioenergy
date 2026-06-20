@@ -29,7 +29,7 @@ export function CaseModal({ item, onOpenChange }: Props) {
         {item && (
           <div className="flex max-h-[85vh] flex-col overflow-y-auto">
             {/* Image */}
-            <div className="relative h-64 w-full overflow-hidden md:h-80">
+            <div className="relative h-64 w-full shrink-0 overflow-hidden md:h-80">
               <img
                 src={item.img}
                 alt={item.title}
