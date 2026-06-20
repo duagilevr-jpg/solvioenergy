@@ -1,0 +1,198 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-sans: "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --font-display: "Inter", "Helvetica Neue", system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+
+  --shadow-soft: 0 1px 2px rgba(11,11,11,0.04), 0 8px 24px -12px rgba(11,11,11,0.08);
+  --shadow-lift: 0 2px 4px rgba(11,11,11,0.04), 0 20px 40px -20px rgba(11,11,11,0.18);
+}
+
+:root {
+  --radius: 1rem;
+
+  /* Base */
+  --background: oklch(1 0 0);                          /* #FFFFFF */
+  --foreground: oklch(0.145 0 0);                      /* near #0B0B0B */
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  /* Ink (black surfaces) */
+  --ink: oklch(0.145 0 0);                             /* #0B0B0B */
+  --ink-foreground: oklch(1 0 0);
+
+  /* Accent — acid green #C6FF3B */
+  --primary: oklch(0.92 0.22 125);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.92 0.22 125);
+  --accent-foreground: oklch(0.145 0 0);
+
+  /* Secondary — light gray #F4F4F4 */
+  --secondary: oklch(0.962 0 0);
+  --secondary-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.962 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0 0);
+
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.145 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.2 0 0);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.2 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.92 0.22 125);
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.25 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: oklch(0.92 0.22 125);
+  --accent-foreground: oklch(0.145 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.92 0.22 125);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+}
+
+/* ——— Animations ——— */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@layer utilities {
+  .animate-fade-up { animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-fade-in { animation: fade-in 0.8s ease-out both; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    will-change: opacity, transform;
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger children via nth-child delays */
+  .stagger > * { transition-delay: 0s; }
+  .stagger.in-view > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger.in-view > *:nth-child(2) { animation-delay: 0.15s; }
+  .stagger.in-view > *:nth-child(3) { animation-delay: 0.25s; }
+  .stagger.in-view > *:nth-child(4) { animation-delay: 0.35s; }
+  .stagger.in-view > *:nth-child(5) { animation-delay: 0.45s; }
+  .stagger.in-view > *:nth-child(6) { animation-delay: 0.55s; }
+
+  /* Card hover lift */
+  .card-lift {
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* Image zoom on hover (parent must have overflow-hidden) */
+  .img-zoom {
+    transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .group:hover .img-zoom { transform: scale(1.04); }
+
+  /* Underline animation left-to-right */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .link-underline:hover::after { transform: scaleX(1); }
+
+  /* Button underline on hover — disabled per design */
+  .btn-underline { position: relative; }
+  .btn-underline .btn-line { display: none; }
+
+  .glass {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+
+  .text-balance { text-wrap: balance; }
+}
